@@ -7,11 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.att.tdp.bisbis10.dto.DishRequest;
+import com.att.tdp.bisbis10.dto.DishUpdateRequest;
 import com.att.tdp.bisbis10.entity.Dish;
 import com.att.tdp.bisbis10.service.DishService;
 
@@ -42,5 +44,15 @@ public class DishController {
         List<Dish> dishes = dishService.getDishesByRestaurantId(restaurantId);
 
         return new ResponseEntity<>(dishes, HttpStatus.OK);
+    }
+
+    @PutMapping("/{dishId}")
+    public ResponseEntity<Dish> updateDish(
+        @PathVariable Integer restaurantId,
+        @PathVariable Integer dishId,
+        @Valid @RequestBody DishUpdateRequest dishUpdateRequest
+    ) {
+        Dish updatedDish = dishService.updateDish(restaurantId, dishId, dishUpdateRequest);
+        return new ResponseEntity<>(updatedDish, HttpStatus.OK);
     }
 }
