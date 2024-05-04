@@ -3,6 +3,10 @@ package com.att.tdp.bisbis10.entity;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,13 +20,23 @@ import jakarta.persistence.Table;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JsonProperty("orderId")
     private UUID id;
 
+    @JsonIgnore
     @ManyToOne
     private Restaurant restaurant;
 
-    @OneToMany(mappedBy = "order")
+    @JsonIgnore
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
+
+    public Order() {
+    }
+
+    public Order(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
 
 
     @Override

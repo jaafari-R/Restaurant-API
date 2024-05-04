@@ -62,7 +62,6 @@ public class DishService {
 
     public Dish getDishByRestaurantAndDishIds(Integer restaurantId, Integer dishId) {
         Optional<Dish> dishOpt = dishRepository.findById(dishId);
-            System.out.println("WTF");
             if(!dishOpt.isPresent()) {
             throw new DishNotFoundException(dishId);
         }

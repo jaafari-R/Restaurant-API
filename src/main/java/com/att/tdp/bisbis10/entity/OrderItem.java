@@ -26,6 +26,13 @@ public class OrderItem {
     public OrderItem() {
     }
 
+    public OrderItem(Integer amount, Order order, Dish dish) {
+        this.amount = amount;
+        this.order = order;
+        this.dish = dish;
+    }
+
+
 
     @Override
     public boolean equals(Object obj) {
