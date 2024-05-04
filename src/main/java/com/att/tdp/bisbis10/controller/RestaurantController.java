@@ -2,6 +2,7 @@ package com.att.tdp.bisbis10.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +20,7 @@ import com.att.tdp.bisbis10.dto.RestaurantUpdateCuisinesRequest;
 import com.att.tdp.bisbis10.dto.RestaurantWithDishesResponse;
 import com.att.tdp.bisbis10.entity.Restaurant;
 import com.att.tdp.bisbis10.service.RestaurantService;
+import com.att.tdp.bisbis10.utils.PaginationUtils;
 
 import jakarta.validation.Valid;
 
@@ -38,14 +40,19 @@ public class RestaurantController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Restaurant>> getAllRestaurants(@RequestParam(required = false) String cuisine) {
+    public ResponseEntity<List<Restaurant>> getAllRestaurants(
+        @RequestParam(required = false) String cuisine,
+        @RequestParam(required = false) Integer page,
+        @RequestParam(required = false) Integer pageSize
+    ) {
         List<Restaurant> restaurants;
+        Pageable pageable = PaginationUtils.createPagable(page, pageSize);
 
         if(cuisine != null) {
-            restaurants = restaurantService.getRestaurantsByCuisine(cuisine);
+            restaurants = restaurantService.getRestaurantsByCuisine(cuisine, pageable);
         } 
         else {
-            restaurants = restaurantService.getAllRestaurants();
+            restaurants = restaurantService.getAllRestaurants(pageable);
         }
         return new ResponseEntity<>(restaurants, HttpStatus.OK);
     }

@@ -10,6 +10,10 @@ public class PaginationUtils {
     static private final int DEFAULT_PAGE_SIZE = 10;
 
     static public Pageable createPagable(Integer page, Integer pageSize) {
+        if(page == null && pageSize == null) {
+            return null;
+        }
+        
         if(page == null) {
             page = 0;
         }

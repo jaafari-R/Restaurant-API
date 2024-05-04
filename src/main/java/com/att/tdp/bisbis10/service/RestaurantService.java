@@ -3,6 +3,8 @@ package com.att.tdp.bisbis10.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.att.tdp.bisbis10.dto.RestaurantRequest;
@@ -31,13 +33,28 @@ public class RestaurantService {
         return newRestaurant;
     }
 
-	public List<Restaurant> getAllRestaurants() {
-        List<Restaurant> restaurants = restaurantRepository.findAll();
+	public List<Restaurant> getAllRestaurants(Pageable pageable) {
+        List<Restaurant> restaurants;
+        if(pageable == null) {
+            restaurants = restaurantRepository.findAll();
+        }
+        else {
+            Page<Restaurant> restaurantsPage = restaurantRepository.findAll(pageable);
+            restaurants = restaurantsPage.getContent();
+        }
         return restaurants;
 	}
 
-    public List<Restaurant> getRestaurantsByCuisine(String cuisine) {
-        List<Restaurant> restaurants = restaurantRepository.findByCuisinesContaining(cuisine);
+    public List<Restaurant> getRestaurantsByCuisine(String cuisine, Pageable pageable) {
+        List<Restaurant> restaurants;
+        if(pageable == null) {
+            restaurants = restaurantRepository.findByCuisinesContaining(cuisine);
+        }
+        else {
+            Page<Restaurant> restaurantsPage = restaurantRepository.findByCuisinesContaining(cuisine, pageable);
+            restaurants = restaurantsPage.getContent();
+        }
+
         return restaurants;
     }
 
