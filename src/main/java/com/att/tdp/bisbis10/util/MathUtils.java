@@ -19,4 +19,8 @@ public class MathUtils {
         float sum = sum(nums);
         return sum / nums.size(); 
     }
+
+    static public float lastTwoDecimalsFloat(float num) {
+        return Math.round(num * 100f) / 100f;
+    }
 }

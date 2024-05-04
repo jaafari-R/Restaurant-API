@@ -22,6 +22,12 @@ public class Rating {
     public Rating() {
     }
 
+    public Rating(Restaurant restaurant, Float rating) {
+        this.restaurant = restaurant;
+        this.rating = rating;
+    }
+
+
     @Override
     public boolean equals(Object obj) {
         if(this == obj) {

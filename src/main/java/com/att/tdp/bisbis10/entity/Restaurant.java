@@ -100,7 +100,10 @@ public class Restaurant {
             List<Float> ratingsVals = ratings.stream()
                 .map(Rating::getRating)
                 .collect(Collectors.toList());
-            return MathUtils.average(ratingsVals);
+            float rating = MathUtils.lastTwoDecimalsFloat(
+                MathUtils.average(ratingsVals)
+            );
+            return rating;
         }
         return 0;
     }
