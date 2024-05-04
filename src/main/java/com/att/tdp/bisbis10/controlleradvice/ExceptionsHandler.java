@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

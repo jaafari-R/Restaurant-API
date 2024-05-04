@@ -16,7 +16,7 @@ public class ErrorResponse {
     public String toString() {
         return "{" +
             " status='" + getStatus() + "'" +
-            ", message='" + getMessage() + "'" +
+            ", message='" + getMessages() + "'" +
             "}";
     }
 
