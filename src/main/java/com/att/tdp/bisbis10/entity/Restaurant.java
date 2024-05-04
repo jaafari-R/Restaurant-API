@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.att.tdp.bisbis10.util.MathUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -32,10 +33,17 @@ public class Restaurant {
     @ElementCollection
     private Set<String> cuisines;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "restaurant")
     private List<Rating> ratings;
 
     public Restaurant() {
+    }
+
+    public Restaurant(String name, Boolean isKosher, Set<String> cuisines) {
+        this.name = name;
+        this.isKosher = isKosher;
+        this.cuisines = cuisines;
     }
 
 
