@@ -1,5 +1,7 @@
 package com.att.tdp.bisbis10.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,12 +23,19 @@ public class Dish {
     private Float price;
 
     @ManyToOne
+    @JsonIgnore
     private Restaurant restaurant;
 
 
     public Dish() {
     }
 
+    public Dish(String name, String description, Float price, Restaurant restaurant) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.restaurant = restaurant;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -51,7 +60,7 @@ public class Dish {
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", price='" + getPrice() + "'" +
-            ", restaurant='" + getRestaurant() + "'" +
+            ", restaurant='" + getRestaurant().getId() + "'" +
             "}";
     }
 

@@ -41,14 +41,19 @@ public class RestaurantService {
         return restaurants;
     }
 
-    public RestaurantWithDishesResponse getRestaurantById(Integer restaurantId) {
-        Optional<Restaurant> restaurant = restaurantRepository.findById(restaurantId);
-        if(!restaurant.isPresent()) {
+    public RestaurantWithDishesResponse getRestaurantWithDishesById(Integer restaurantId) {
+        Restaurant restaurant = getRestaurantById(restaurantId);
+        RestaurantWithDishesResponse restaurantWithDishesResponse = new RestaurantWithDishesResponse(restaurant);
+        return restaurantWithDishesResponse;
+    }
+
+    public Restaurant getRestaurantById(Integer restaurantId) {
+        Optional<Restaurant> restaurantOpt = restaurantRepository.findById(restaurantId);
+        if(!restaurantOpt.isPresent()) {
             throw new RestaurantNotFoundException(restaurantId);
         }
 
-        RestaurantWithDishesResponse restaurantWithDishesResponse = new RestaurantWithDishesResponse(restaurant.get());
-        return restaurantWithDishesResponse;
+        return restaurantOpt.get();
     }
 
     public Restaurant updateRestaurantCuisines(Integer restaurantId, RestaurantUpdateCuisinesRequest restaurantUpdateCuisinesRequest) {

@@ -52,7 +52,7 @@ public class RestaurantController {
 
     @GetMapping("/{restaurantId}")
     public ResponseEntity<RestaurantWithDishesResponse> getRestaurantById(@PathVariable Integer restaurantId) {
-        RestaurantWithDishesResponse restaurant = restaurantService.getRestaurantById(restaurantId);
+        RestaurantWithDishesResponse restaurant = restaurantService.getRestaurantWithDishesById(restaurantId);
         return new ResponseEntity<>(restaurant, HttpStatus.OK);
     }
 
