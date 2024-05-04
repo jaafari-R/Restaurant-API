@@ -7,10 +7,12 @@ import javax.net.ssl.HttpsURLConnection;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.att.tdp.bisbis10.exception.NotFoundException;
 import com.att.tdp.bisbis10.exception.dish.DishDoesNotBelongToRestaurantException;
@@ -18,6 +20,22 @@ import com.att.tdp.bisbis10.exception.dish.DishDoesNotBelongToRestaurantExceptio
 @RestControllerAdvice
 public class ExceptionsHandler {
     
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleItemNotFound(MethodArgumentTypeMismatchException e) {
+        List<String> messages = getSingleMessageList(e.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), messages);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleItemNotFound(HttpMessageNotReadableException e) {
+        List<String> messages = getSingleMessageList(e.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), messages);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleInvalidArgument(MethodArgumentNotValidException e) {
         List<String> messages = e.getBindingResult().getFieldErrors().stream()
