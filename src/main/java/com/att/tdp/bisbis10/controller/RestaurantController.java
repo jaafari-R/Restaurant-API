@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.att.tdp.bisbis10.dto.RestaurantRequest;
+import com.att.tdp.bisbis10.dto.RestaurantWithDishesResponse;
 import com.att.tdp.bisbis10.entity.Restaurant;
 import com.att.tdp.bisbis10.service.RestaurantService;
 
@@ -45,5 +46,11 @@ public class RestaurantController {
             restaurants = restaurantService.getAllRestaurants();
         }
         return new ResponseEntity<>(restaurants, HttpStatus.OK);
+    }
+
+    @GetMapping("{restaurantId}")
+    public ResponseEntity<RestaurantWithDishesResponse> getRestaurantById(@PathVariable Integer restaurantId) {
+        RestaurantWithDishesResponse restaurant = restaurantService.getRestaurantById(restaurantId);
+        return new ResponseEntity<>(restaurant, HttpStatus.OK);
     }
 }

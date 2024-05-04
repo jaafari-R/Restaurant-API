@@ -37,6 +37,10 @@ public class Restaurant {
     @OneToMany(mappedBy = "restaurant")
     private List<Rating> ratings;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurant")
+    private List<Dish> dishes;
+
     public Restaurant() {
     }
 
@@ -127,6 +131,17 @@ public class Restaurant {
 
     public void setRatings(List<Rating> ratings) {
         this.ratings = ratings;
+    }
+    public void setAverageRating(float averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public List<Dish> getDishes() {
+        return this.dishes;
+    }
+
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
     }
 
 }
