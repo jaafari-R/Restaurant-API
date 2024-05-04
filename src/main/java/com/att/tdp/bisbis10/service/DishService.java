@@ -74,4 +74,9 @@ public class DishService {
 
         return dish;
     }
+
+    public void deleteDish(Integer restaurantId, Integer dishId) {
+        getDishByRestaurantAndDishIds(restaurantId, dishId);
+        dishRepository.deleteById(dishId);
+    }
 }
