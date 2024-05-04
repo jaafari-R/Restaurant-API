@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import com.att.tdp.bisbis10.exception.InvalidValueException;
 import com.att.tdp.bisbis10.exception.NotFoundException;
 import com.att.tdp.bisbis10.exception.dish.DishDoesNotBelongToRestaurantException;
 
@@ -22,18 +23,14 @@ public class ExceptionsHandler {
     
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorResponse> handleItemNotFound(MethodArgumentTypeMismatchException e) {
-        List<String> messages = getSingleMessageList(e.getMessage());
-
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), messages);
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        ErrorResponse errorResponse = errorResponseWithSingleMessage(e, HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleItemNotFound(HttpMessageNotReadableException e) {
-        List<String> messages = getSingleMessageList(e.getMessage());
-
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), messages);
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        ErrorResponse errorResponse = errorResponseWithSingleMessage(e, HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -48,21 +45,28 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse> handleItemNotFound(NotFoundException e) {
-        List<String> messages = getSingleMessageList(e.getMessage());
-
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), messages);
+        ErrorResponse errorResponse = errorResponseWithSingleMessage(e, HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(DishDoesNotBelongToRestaurantException.class)
     public ResponseEntity<ErrorResponse> handleDishDoesNotBelongToRestaurant(DishDoesNotBelongToRestaurantException e) {
-        List<String> messages = getSingleMessageList(e.getMessage());
-
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), messages);
+        ErrorResponse errorResponse = errorResponseWithSingleMessage(e, HttpStatus.BAD_REQUEST.value());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    private List<String> getSingleMessageList(String message) {
-        return List.of(message);
+
+    @ExceptionHandler(InvalidValueException.class)
+    public ResponseEntity<ErrorResponse> handleDishDoesNotBelongToRestaurant(InvalidValueException e) {
+        ErrorResponse errorResponse = errorResponseWithSingleMessage(e, HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+
+
+    private ErrorResponse errorResponseWithSingleMessage(Exception e, int status) {
+        List<String> messages = List.of(e.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(status, messages);
+        return errorResponse;
     }
 }
