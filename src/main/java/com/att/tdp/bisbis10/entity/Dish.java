@@ -2,8 +2,6 @@ package com.att.tdp.bisbis10.entity;
 
 import java.util.List;
 
-import org.hibernate.annotations.Cascade;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;

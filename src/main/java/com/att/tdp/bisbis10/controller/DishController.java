@@ -2,6 +2,7 @@ package com.att.tdp.bisbis10.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,12 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.att.tdp.bisbis10.dto.DishRequest;
 import com.att.tdp.bisbis10.dto.DishUpdateRequest;
 import com.att.tdp.bisbis10.entity.Dish;
 import com.att.tdp.bisbis10.service.DishService;
+import com.att.tdp.bisbis10.utils.PaginationUtils;
 
 import jakarta.validation.Valid;
 
@@ -40,9 +43,12 @@ public class DishController {
 
     @GetMapping
     public ResponseEntity<List<Dish>> getDishesByRestaurantId(
-        @PathVariable Integer restaurantId
+        @PathVariable Integer restaurantId,
+        @RequestParam(required = false) Integer page,
+        @RequestParam(required = false) Integer pageSize
     ) {
-        List<Dish> dishes = dishService.getDishesByRestaurantId(restaurantId);
+        Pageable pageable = PaginationUtils.createPagable(page, pageSize);
+        List<Dish> dishes = dishService.getDishesByRestaurantId(restaurantId, pageable);
 
         return new ResponseEntity<>(dishes, HttpStatus.OK);
     }

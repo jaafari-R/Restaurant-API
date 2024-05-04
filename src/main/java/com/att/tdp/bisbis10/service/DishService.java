@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.att.tdp.bisbis10.dto.DishRequest;
@@ -41,9 +43,20 @@ public class DishService {
         return newDish;
     }
 
-    public List<Dish> getDishesByRestaurantId(Integer restaurantId) {
-        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
-        return restaurant.getDishes();
+    public List<Dish> getDishesByRestaurantId(Integer restaurantId, Pageable pageable) {
+        // Throw exception if restaurant does not exist!
+        restaurantService.getRestaurantById(restaurantId);
+        List<Dish> dishes;
+
+        if(pageable == null) {
+            dishes = dishRepository.findByRestaurantId(restaurantId);
+        }
+        else {
+            Page<Dish> dishesPage = dishRepository.findByRestaurantId(restaurantId, pageable);
+            dishes = dishesPage.getContent();
+        }
+
+        return dishes;
     }
 
     public Dish updateDish(Integer restaurantId, Integer dishId, @Valid DishUpdateRequest dishUpdateRequest) {
