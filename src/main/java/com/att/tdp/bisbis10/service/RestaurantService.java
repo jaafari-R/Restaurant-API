@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.swing.text.html.Option;
+
 import org.springframework.stereotype.Service;
 
 import com.att.tdp.bisbis10.dto.RestaurantRequest;
+import com.att.tdp.bisbis10.dto.RestaurantUpdateCuisinesRequest;
 import com.att.tdp.bisbis10.dto.RestaurantWithDishesResponse;
 import com.att.tdp.bisbis10.entity.Restaurant;
 import com.att.tdp.bisbis10.exception.restaurant.RestaurantNotFoundException;
@@ -49,6 +52,20 @@ public class RestaurantService {
 
         RestaurantWithDishesResponse restaurantWithDishesResponse = new RestaurantWithDishesResponse(restaurant.get());
         return restaurantWithDishesResponse;
+    }
+
+    public Restaurant updateRestaurantCuisines(Integer restaurantId, RestaurantUpdateCuisinesRequest restaurantUpdateCuisinesRequest) {
+        Optional<Restaurant> restaurantOpt = restaurantRepository.findById(restaurantId);
+        if(!restaurantOpt.isPresent()) {
+            throw new RestaurantNotFoundException(restaurantId);
+        }
+
+        Restaurant restaurant = restaurantOpt.get();
+        restaurant.setCuisines(
+            restaurantUpdateCuisinesRequest.getCuisines()
+        );
+        restaurantRepository.save(restaurant);
+        return restaurant;
     }
 
 }
