@@ -3,8 +3,10 @@ package com.att.tdp.bisbis10.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,5 +63,11 @@ public class RestaurantController {
     public ResponseEntity<Restaurant> updateRestaurantCuisines(@PathVariable Integer restaurantId, @RequestBody RestaurantUpdateCuisinesRequest RestaurantUpdateCuisinesRequest) {
         Restaurant updatedRestaurant = restaurantService.updateRestaurantCuisines(restaurantId, RestaurantUpdateCuisinesRequest);
         return new ResponseEntity<>(updatedRestaurant, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{restaurantId}")
+    public ResponseEntity<Void> deleteRestaurantById(@PathVariable Integer restaurantId) {
+        restaurantService.deleteRestaurantById(restaurantId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

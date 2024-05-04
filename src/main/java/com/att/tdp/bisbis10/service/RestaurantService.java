@@ -68,4 +68,13 @@ public class RestaurantService {
         return restaurant;
     }
 
+    public void deleteRestaurantById(Integer restaurantId) {
+        Optional<Restaurant> restaurantOpt = restaurantRepository.findById(restaurantId); 
+        if(!restaurantOpt.isPresent()) {
+            throw new RestaurantNotFoundException(restaurantId);
+        }
+
+        restaurantRepository.deleteById(restaurantId);
+    }
+
 }
