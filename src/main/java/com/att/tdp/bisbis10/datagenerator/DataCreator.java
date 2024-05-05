@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Component;
 
 import com.att.tdp.bisbis10.dto.DishRequest;
 import com.att.tdp.bisbis10.dto.OrderItemDTO;
@@ -60,7 +59,6 @@ public class DataCreator {
             createdRestaurants.add(createdRestaurant);
         }
 
-        // TODO
         // -- Dishes
         List<Dish> dishes = DishDataGen.createRandomDishesList(createdRestaurants);
         for (Dish dish : dishes) {
@@ -72,7 +70,6 @@ public class DataCreator {
             createdRestaurants.get(newDish.getRestaurant().getId() - 1).getDishes().add(newDish);
         }
 
-        // TODO
         // -- Ratings
         List<Rating> ratings = RatingDataGen.createRandomRatingList(createdRestaurants);
         for (Rating rating : ratings) {
@@ -82,7 +79,6 @@ public class DataCreator {
             ));
         }
 
-        // TODO
         // -- Orders
         List<Order> orders = OrderDataGen.createRandomOrdersList(createdRestaurants);
         for (Order order : orders) {

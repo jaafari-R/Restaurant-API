@@ -5,19 +5,16 @@ spring:
   application:
     name: temporal-demo
   datasource:
-    url: jdbc:h2:mem:bisbis10;DB_CLOSE_DELAY=-1
+    url: jdbc:postgresql://localhost:5432/bisbis10
     username: bisbis10
     password: bisbis10
-    driverClassName: org.h2.Driver
-    platform: h2
+    driverClassName: org.postgresql.Driver
+    platform: postgres
   jpa:
-    database: H2
+    database: POSTGRESQL
     show-sql: true
     hibernate:
       ddl-auto: update
   sql:
     init:
       mode: always
-  h2:
-    console:
-      enabled: true
