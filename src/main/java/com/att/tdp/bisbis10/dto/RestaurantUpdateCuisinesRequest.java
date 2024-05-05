@@ -11,6 +11,10 @@ public class RestaurantUpdateCuisinesRequest {
     public RestaurantUpdateCuisinesRequest() {
     }
 
+    public RestaurantUpdateCuisinesRequest(Set<String> cuisines) {
+        this.cuisines = cuisines;
+    }
+
     
     @Override
     public String toString() {

@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.att.tdp.bisbis10.dto.RestaurantRequest;
+import com.att.tdp.bisbis10.dto.RestaurantUpdateCuisinesRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
@@ -36,10 +37,6 @@ public class RestaurantControllerIntegrationTests {
         ObjectMapper mapper = new ObjectMapper();
         String jsonRequest = mapper.writeValueAsString(restaurantRequest);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/restaurants/{restaurantId}", 1)
-               .content(jsonRequest)
-               .contentType("application/json"))
-               .andExpect(MockMvcResultMatchers.status().isOk());
         mockMvc.perform(
             MockMvcRequestBuilders.post("/restaurants")
                 .content(jsonRequest)
@@ -139,5 +136,77 @@ public class RestaurantControllerIntegrationTests {
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
             .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(10));
+    }
+
+    @Test
+    void testGetRestaurantsByCuisine() throws Exception {
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/restaurants")
+                .param("cuisine", "Indian")
+            )
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(34));
+    }
+
+    @Test
+    void testGetRestaurantsByCuisine_WithPagination() throws Exception {
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/restaurants")
+                .param("cuisine", "Indian")
+                .param("page", "0")
+                .param("pageSize", "10")
+            )
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(10));
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/restaurants")
+                .param("cuisine", "Indian")
+                .param("page", "3")
+                .param("pageSize", "10")
+            )
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(4));
+    }
+
+    @Test
+    void testPutRestaurantById() throws Exception {
+        RestaurantUpdateCuisinesRequest restaurantUpdateCuisinesRequest = 
+            new RestaurantUpdateCuisinesRequest(
+                Set.of("Israeli", "Egyption")
+            );
+
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonRequest = mapper.writeValueAsString(restaurantUpdateCuisinesRequest);
+        
+        mockMvc.perform(
+            MockMvcRequestBuilders.put("/restaurants/{restaurantId}", 2)
+                .content(jsonRequest)
+                .contentType("application/json")
+            )
+            .andExpect(MockMvcResultMatchers.status().isOk());
+
+    }
+
+    @Test
+    void testPutRestaurantById_NotFound() throws Exception {
+        RestaurantUpdateCuisinesRequest restaurantUpdateCuisinesRequest = 
+            new RestaurantUpdateCuisinesRequest(
+                Set.of("Israeli", "Egyption")
+            );
+
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonRequest = mapper.writeValueAsString(restaurantUpdateCuisinesRequest);
+        
+        mockMvc.perform(
+            MockMvcRequestBuilders.put("/restaurants/{restaurantId}", 200)
+                .content(jsonRequest)
+                .contentType("application/json")
+            )
+            .andExpect(MockMvcResultMatchers.status().isNotFound());
+
     }
 }
