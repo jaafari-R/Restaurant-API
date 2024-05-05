@@ -16,9 +16,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import com.att.tdp.bisbis10.dto.RestaurantRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.transaction.Transactional;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class RestaurantControllerIntegrationTests {
     @Autowired
     private MockMvc mockMvc;
@@ -87,5 +90,54 @@ public class RestaurantControllerIntegrationTests {
             MockMvcRequestBuilders.get("/restaurants/{restaurantId}", "abc"))
             .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
+    }
+
+    @Test
+    void testDeleteRestaurantById() throws Exception {
+        mockMvc.perform(
+            MockMvcRequestBuilders.delete("/restaurants/{restaurantId}", 99))
+            .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+    }
+
+    @Test
+    void testDeleteRestaurantById_NotFound() throws Exception {
+        List<Integer> ids = List.of(-1, 105);
+
+        for (Integer id : ids) {
+            mockMvc.perform(
+                MockMvcRequestBuilders.delete("/restaurants/{restaurantId}", id))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+            }
+    }
+
+    @Test
+    void testGetAllRestaurants() throws Exception {
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/restaurants"))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(100));
+    }
+
+    @Test
+    void testGetAllRestaurants_WithPagination() throws Exception {
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/restaurants")
+                .param("page", "0")
+                .param("pageSize", "10")
+            )
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(10));
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/restaurants")
+                .param("page", "3")
+                .param("pageSize", "30")
+            )
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(10));
     }
 }
