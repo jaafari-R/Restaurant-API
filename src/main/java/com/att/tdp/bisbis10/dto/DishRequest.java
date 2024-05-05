@@ -16,6 +16,12 @@ public class DishRequest {
     public DishRequest() {
     }
 
+    public DishRequest(String name, String description, Float price) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
 
     @Override
     public String toString() {

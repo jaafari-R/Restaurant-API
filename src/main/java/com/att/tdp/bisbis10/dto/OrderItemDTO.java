@@ -13,6 +13,11 @@ public class OrderItemDTO {
     public OrderItemDTO() {
     }
 
+    public OrderItemDTO(Integer dishId, Integer amount) {
+        this.dishId = dishId;
+        this.amount = amount;
+    }
+
 
     public Integer getDishId() {
         return this.dishId;

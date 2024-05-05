@@ -38,6 +38,11 @@ public class Order {
         this.restaurant = restaurant;
     }
 
+    public Order(Restaurant restaurant, List<OrderItem> orderItems) {
+        this.restaurant = restaurant;
+        this.orderItems = orderItems;
+    }
+
 
     @Override
     public boolean equals(Object obj) {

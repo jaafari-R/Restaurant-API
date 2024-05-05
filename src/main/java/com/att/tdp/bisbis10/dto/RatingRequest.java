@@ -15,6 +15,11 @@ public class RatingRequest {
     public RatingRequest() {
     }
 
+    public RatingRequest(Integer restaurantId, Float rating) {
+        this.restaurantId = restaurantId;
+        this.rating = rating;
+    }
+
 
     @Override
     public String toString() {

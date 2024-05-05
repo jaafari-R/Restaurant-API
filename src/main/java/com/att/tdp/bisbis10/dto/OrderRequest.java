@@ -16,6 +16,11 @@ public class OrderRequest {
     public OrderRequest() {
     }
 
+    public OrderRequest(Integer restaurantId, List<OrderItemDTO> orderItems) {
+        this.restaurantId = restaurantId;
+        this.orderItems = orderItems;
+    }
+
 
     public Integer getRestaurantId() {
         return this.restaurantId;

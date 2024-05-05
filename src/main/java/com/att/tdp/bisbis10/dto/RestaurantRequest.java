@@ -18,6 +18,12 @@ public class RestaurantRequest {
     public RestaurantRequest() {
     }
 
+    public RestaurantRequest(String name, Boolean isKosher, Set<String> cuisines) {
+        this.name = name;
+        this.isKosher = isKosher;
+        this.cuisines = cuisines;
+    }
+
 
     @Override
     public String toString() {
