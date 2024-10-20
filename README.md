@@ -56,9 +56,3 @@ For your convenience, compose.yml includes Postgresql DB, the app is already poi
 2. Java IDE - https://www.jetbrains.com/idea/download or any other IDE
 3. Docker - https://www.docker.com/products/docker-desktop/
 
-## Instructions
-1. Fork this repo to your GitHub account.
-2. Clone it to your local machine.
-3. You may use the compose.yml file to spin up a local PostgreSQL Docker container
-4. Complete the task.
-5. On completion, send your repo link to the rm-tdpisraelhomework@intl.att.com email, (a snapshot will be taken from your repo once you submit the homework). please do not update your repo after you submit the homework.
