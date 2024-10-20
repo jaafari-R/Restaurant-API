@@ -48,9 +48,6 @@ The system is built using Java Spring Boot, leveraging its robust framework for 
 | Delete a dish             | DELETE /restaurants/{id}/dishes/{dishId} |                                        | 204 No Content  |                                                                  |
 | Get dishes by a restaurant| GET /restaurants/{id}/dishes  |                                         | 200 OK          | [{"id":"1","name":"Humus","description":"Good one","price": 48}] |
 
-## Jump Start
-For your convenience, compose.yml includes Postgresql DB, the app is already pointing to this connection. In addition, you have the schema and data SQL files that can setup your DB schema and init data.
-
 ## Prerequisite
 1. Java SDK - https://www.oracle.com/java/technologies/downloads/#java21
 2. Java IDE - https://www.jetbrains.com/idea/download or any other IDE
